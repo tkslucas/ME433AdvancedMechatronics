@@ -7,14 +7,8 @@ My solutions to all of the assignments for MECH433, Spring 2025.
 ## Things to ask Nick
 - Ask Nick to add me as Contributor for ME433.Kitchen
 - Ask Nick for every chip/sensor I need:
-  1. Get MCP4912 DAC chip
-  2. Get 23k256 External SRAM chip
-  3. Get MCP23008 IO Expander chip
-  4. Get SSD1306 I2C OLED display
-  5. Get RC Servos
-  6. Get Addressable LEDs
-  7. Get OV7670 Camera
-  8. Get MPU6050 IMU sensor
+  1. Get 23k256 External SRAM chip
+  2. Get OV7670 Camera
 
 ### HW 1
 - Ask Nick to add me as Contributor for ME433.Kitchen
