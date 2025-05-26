@@ -4,27 +4,6 @@ My solutions to all of the assignments for MECH433, Spring 2025.
 
 ## TODO
 
-## Things to ask Nick
-- Ask Nick to add me as Contributor for ME433.Kitchen
-- Ask Nick for every chip/sensor I need:
-  1. Get 23k256 External SRAM chip
-  2. Get OV7670 Camera
-
-### HW 1
-- Ask Nick to add me as Contributor for ME433.Kitchen
-- Push my recipe to the repo
-- Submit link on Canvas for the specific page for my recipe
-
-### HW 2
-- Record Video
-
-### HW 3
-- Record Video
-
-### HW 4
-- Get MCP4912 DAC chip
-- Take Screenshot of output voltage on oscilloscope, showing at least 3 cycles of each signal
-
 ### HW 5
 - Get 23k256 External SRAM chip
 - Upload your screenshot of the number of CPU cycles it takes to do float math, screenshot of the output of the DAC, and link to your repo.
@@ -64,6 +43,15 @@ My solutions to all of the assignments for MECH433, Spring 2025.
 
 ### HW 15
 - 
+
+### HW 16
+-
+
+### HW 17
+-
+
+### HW 18
+-
 
 ## Contributors
 Lucas Takayasu
