@@ -4,16 +4,10 @@ My solutions to all of the assignments for MECH433, Spring 2025.
 
 ## TODO
 
-### HW 6
-- Get MCP23008 IO Expander chip
-- Record Video
-
 ### HW 7
-- Get SSD1306 I2C OLED display
 - Record Video
 
 ### HW 8
-- Get RC Servos and Addressable LEDs
 - Record Video
 
 ### HW 9
