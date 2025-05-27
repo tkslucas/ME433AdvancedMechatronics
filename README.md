@@ -4,9 +4,6 @@ My solutions to all of the assignments for MECH433, Spring 2025.
 
 ## TODO
 
-### HW 7
-- Record Video
-
 ### HW 8
 - Record Video
 
