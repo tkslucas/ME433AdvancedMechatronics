@@ -4,10 +4,6 @@ My solutions to all of the assignments for MECH433, Spring 2025.
 
 ## TODO
 
-### HW 5
-- Get 23k256 External SRAM chip
-- Upload your screenshot of the number of CPU cycles it takes to do float math, screenshot of the output of the DAC, and link to your repo.
-
 ### HW 6
 - Get MCP23008 IO Expander chip
 - Record Video
