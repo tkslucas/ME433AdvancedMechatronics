@@ -74,9 +74,7 @@ static inline void cs_deselect() {
 }
 #endif
 
-int main() {
-    pico_init_all();
-
+void floating_point_calculations() {
     volatile float f1, f2;
     printf("Enter two floats to use:");
     scanf("%f %f", &f1, &f2);
@@ -123,4 +121,9 @@ int main() {
     printf("\nTime for FP div: %.3f\n", div_time);
 
     printf("\nResults: \n%f+%f=%f \n%f-%f=%f \n%f*%f=%f \n%f/%f=%f\n", f1,f2,f_add, f1,f2,f_sub, f1,f2,f_mul, f1,f2,f_div);
+}
+
+int main() {
+    pico_init_all();
+    floating_point_calculations();
 }
