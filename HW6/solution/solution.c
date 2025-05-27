@@ -22,6 +22,10 @@ static void io_expander_init();
 static void WritePin(uint8_t advice, uint8_t register, uint8_t data);
 static uint8_t ReadPin(uint8_t advice, uint8_t register);
 
+static void pico_set_led(bool led_state){
+    gpio_put(PICO_DEFAULT_LED_PIN, led_state);
+}
+
 int main() {
     pico_init_all();
 
@@ -65,10 +69,6 @@ static void pico_init_all() {
 
     // IO Expander
     io_expander_init();
-}
-
-static void pico_set_led(bool led_state){
-    gpio_put(PICO_DEFAULT_LED_PIN, led_state);
 }
 
 static void io_expander_init(){
