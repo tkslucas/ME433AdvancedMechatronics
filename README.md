@@ -4,12 +4,6 @@ My solutions to all of the assignments for MECH433, Spring 2025.
 
 ## TODO
 
-### HW 9
-- Record Video (just coding)
-
-### HW 10
-- Upload Images (just coding)
-
 ### HW 11
 - Record Video (just coding)
 
