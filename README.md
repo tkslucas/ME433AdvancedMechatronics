@@ -4,15 +4,11 @@ My solutions to all of the assignments for MECH433, Spring 2025.
 
 ## TODO
 
-### HW 11
-- Record Video (just coding)
-
 ### HW 12
-- Get OV7670 Camera
-- No submission for now
+- Record Video
 
 ### HW 13
-- Get MPU6050 IMU sensor
+- Get new MPU6050 IMU sensor (for some reason mine is not working)
 - Record Video
 
 ## Final Project
@@ -20,16 +16,18 @@ My solutions to all of the assignments for MECH433, Spring 2025.
 - Upload Images of CAD Designs
 
 ### HW 15
-- 
+- PCB Design in KiCad
 
 ### HW 16
--
+- Motor control
+- Get motor
+- Submit code
 
 ### HW 17
--
+- Line following, depends on Camera
 
 ### HW 18
--
+- Document robot
 
 ## Contributors
 Lucas Takayasu
