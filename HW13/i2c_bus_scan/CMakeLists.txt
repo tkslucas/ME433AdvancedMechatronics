@@ -28,32 +28,25 @@ set(PICO_BOARD pico2 CACHE STRING "Board type")
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(solution C CXX ASM)
+project(i2c_bus_scan C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(solution solution.c)
+add_executable(i2c_bus_scan
+        bus_scan.c
+        )
 
-pico_set_program_name(solution "solution")
-pico_set_program_version(solution "0.1")
+# pull in common dependencies and additional i2c hardware support
+target_link_libraries(i2c_bus_scan pico_stdlib hardware_i2c)
+
+# create map/bin/hex file etc.
+pico_add_extra_outputs(i2c_bus_scan)
+
+# add url via pico_set_program_url
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(solution 0)
-pico_enable_stdio_usb(solution 1)
-
-# Add the standard library to the build
-target_link_libraries(solution
-        pico_stdlib
-        hardware_i2c
-        hardware_adc)
-
-# Add the standard include files to the build
-target_include_directories(solution PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}
-)
-
-pico_add_extra_outputs(solution)
-
+pico_enable_stdio_uart(i2c_bus_scan 0)
+pico_enable_stdio_usb(i2c_bus_scan 1)
