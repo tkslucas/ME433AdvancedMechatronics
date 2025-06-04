@@ -35,7 +35,7 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(line-following line-following.c cam.c)
+add_executable(line-following line-following.c cam.c motor_control.c)
 
 pico_set_program_name(line-following "line-following")
 pico_set_program_version(line-following "0.1")
