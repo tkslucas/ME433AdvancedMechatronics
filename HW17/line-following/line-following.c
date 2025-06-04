@@ -6,8 +6,13 @@
 #include "cam.h"
 #include "motor_control.h"
 
-int main()
-{
+const int MAX_DUTY = 100;
+const int MIN_DUTY = 60;
+const int BASE_DUTY = 70;
+const int DEADBAND = 5;
+const float GAIN = 0.3f;
+
+int main() {
     stdio_init_all();
     motor_init();
 
@@ -21,24 +26,37 @@ int main()
     init_camera_pins();
     sleep_ms(100);
  
-    //motor_test_all();
-    //motor_turn_left();
-    //motor_turn_right();
-    //motor_spin_in_place();  
-
     while (true) {
-        // uncomment these and printImage() when testing with python 
-        //char m[10];
-        //scanf("%s",m);
-
-        // Camera
         setSaveImage(1);
-        while(getSaveImage()==1){}
+        while(getSaveImage()==1) {}
         convertImage();
-        int com = findLine(IMAGESIZEY/2); // calculate the position of the center of the ine
-        setPixel(IMAGESIZEY/2,com,0,255,0); // draw the center so you can see it in python
-        //printImage();
-        printf("%d\r\n",com); // comment this when testing with python
+
+        int com = findLine(IMAGESIZEY/2);
+        setPixel(IMAGESIZEY/2, com, 0, 255, 0);
+        printf("%d\r\n", com);
+
+        int image_center = IMAGESIZEX / 2;
+        int error = com - image_center;
+
+        if (abs(error) < DEADBAND) {
+            motor_a_set(BASE_DUTY);
+            motor_b_set(BASE_DUTY);
+        } else {
+            int adjust = (int)(GAIN * error);
+
+            int left_duty  = BASE_DUTY + adjust;
+            int right_duty = BASE_DUTY - adjust;
+
+            if (left_duty > MAX_DUTY) left_duty = MAX_DUTY;
+            if (left_duty < MIN_DUTY) left_duty = MIN_DUTY;
+            if (right_duty > MAX_DUTY) right_duty = MAX_DUTY;
+            if (right_duty < MIN_DUTY) right_duty = MIN_DUTY;
+
+            motor_a_set(left_duty);
+            motor_b_set(right_duty);
+        }
+
+        sleep_ms(10);
     }
 }
 
