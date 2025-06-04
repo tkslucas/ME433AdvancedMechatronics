@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "pico/stdlib.h"
 #include "hardware/pwm.h"
@@ -8,7 +9,7 @@
 
 const int MAX_DUTY = 100;
 const int MIN_DUTY = 60;
-const int BASE_DUTY = 70;
+const int BASE_DUTY = 65;
 const int DEADBAND = 5;
 const float GAIN = 0.3f;
 
@@ -33,10 +34,10 @@ int main() {
 
         int com = findLine(IMAGESIZEY/2);
         setPixel(IMAGESIZEY/2, com, 0, 255, 0);
-        printf("%d\r\n", com);
 
         int image_center = IMAGESIZEX / 2;
         int error = com - image_center;
+        printf("%d\r\n", error);
 
         if (abs(error) < DEADBAND) {
             motor_a_set(BASE_DUTY);
@@ -55,8 +56,6 @@ int main() {
             motor_a_set(left_duty);
             motor_b_set(right_duty);
         }
-
-        sleep_ms(10);
     }
 }
 

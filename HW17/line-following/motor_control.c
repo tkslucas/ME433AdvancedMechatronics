@@ -11,7 +11,7 @@
 #define BIN1 18
 #define BIN2 19
 #define LED_LEFT 28   // For motor A
-#define LED_RIGHT 26  // For motor B
+#define LED_RIGHT 21  // For motor B
 
 #define WRAP_VALUE 99
 #define CLOCK_DIV 150.0f
@@ -76,13 +76,13 @@ static void set_led_pwm(uint led_gpio, int duty) {
 
 void motor_a_set(int duty) {
     duty_a = duty;
-    set_motor_pwm(AIN2, AIN1, duty_a);  // AIN2/AIN1 swapped for reversed mount
+    //set_motor_pwm(AIN2, AIN1, duty_a);  // AIN2/AIN1 swapped for reversed mount
     set_led_pwm(LED_LEFT, duty_a);
 }
 
 void motor_b_set(int duty) {
     duty_b = duty;
-    set_motor_pwm(BIN1, BIN2, duty_b);
+    //set_motor_pwm(BIN1, BIN2, duty_b);
     set_led_pwm(LED_RIGHT, duty_b);
 }
 
