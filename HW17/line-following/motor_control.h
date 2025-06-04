@@ -24,5 +24,8 @@ void motor_stop_all(void);
 
 // Test
 void motor_test_all(void);
+void motor_turn_left(void);
+void motor_turn_right(void);
+void motor_spin_in_place(void);
 
 #endif // MOTOR_CONTROL_H

@@ -1,13 +1,17 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-#include "motor_control.h"
 #include "hardware/pwm.h"
 #include "pico/stdlib.h"
 
-#define AIN1 17
-#define AIN2 16
+#include "motor_control.h"
+
+#define AIN1 16
+#define AIN2 17
 #define BIN1 18
 #define BIN2 19
+#define LED_LEFT 28   // For motor A
+#define LED_RIGHT 26  // For motor B
 
 #define WRAP_VALUE 99
 #define CLOCK_DIV 150.0f
@@ -17,10 +21,13 @@ static int duty_b = 0;
 
 static void init_pwm_pin(uint gpio);
 static void set_motor_pwm(uint in1, uint in2, int duty);
+static void set_led_pwm(uint led_gpio, int duty);
 
 void motor_init(void) {
     init_pwm_pin(AIN1); init_pwm_pin(AIN2);
     init_pwm_pin(BIN1); init_pwm_pin(BIN2);
+    init_pwm_pin(LED_LEFT);
+    init_pwm_pin(LED_RIGHT);
 }
 
 static void init_pwm_pin(uint gpio) {
@@ -33,8 +40,8 @@ static void init_pwm_pin(uint gpio) {
 }
 
 static void set_motor_pwm(uint in1, uint in2, int duty) {
-    duty = duty > DUTY_MAX ? DUTY_MAX : duty;
-    duty = duty < DUTY_MIN ? DUTY_MIN : duty;
+    duty = duty > 100 ? 100 : duty;
+    duty = duty < -100 ? -100 : duty;
 
     uint slice = pwm_gpio_to_slice_num(in1);
     uint ch1 = pwm_gpio_to_channel(in1);
@@ -52,41 +59,56 @@ static void set_motor_pwm(uint in1, uint in2, int duty) {
     }
 }
 
+static void set_led_pwm(uint led_gpio, int duty) {
+    uint slice = pwm_gpio_to_slice_num(led_gpio);
+    uint channel = pwm_gpio_to_channel(led_gpio);
+
+    int abs_duty = abs(duty);
+    int brightness = 0;
+
+    if (abs_duty >= 60) {
+        int scaled = abs_duty - 60;           // Range: 0–40
+        brightness = (scaled * scaled * WRAP_VALUE) / (40 * 40);  // Quadratic mapping
+    }
+
+    pwm_set_chan_level(slice, channel, brightness);
+}
+
 void motor_a_set(int duty) {
     duty_a = duty;
-    set_motor_pwm(AIN1, AIN2, duty_a);
+    set_motor_pwm(AIN2, AIN1, duty_a);  // AIN2/AIN1 swapped for reversed mount
+    set_led_pwm(LED_LEFT, duty_a);
 }
 
 void motor_b_set(int duty) {
     duty_b = duty;
     set_motor_pwm(BIN1, BIN2, duty_b);
+    set_led_pwm(LED_RIGHT, duty_b);
 }
 
 void motor_a_increment(void) {
-    if (duty_a < DUTY_MAX) duty_a++;
-    set_motor_pwm(AIN1, AIN2, duty_a);
+    if (duty_a < 100) duty_a++;
+    motor_a_set(duty_a);
 }
 
 void motor_a_decrement(void) {
-    if (duty_a > DUTY_MIN) duty_a--;
-    set_motor_pwm(AIN1, AIN2, duty_a);
+    if (duty_a > -100) duty_a--;
+    motor_a_set(duty_a);
 }
 
 void motor_b_increment(void) {
-    if (duty_b < DUTY_MAX) duty_b++;
-    set_motor_pwm(BIN1, BIN2, duty_b);
+    if (duty_b < 100) duty_b++;
+    motor_b_set(duty_b);
 }
 
 void motor_b_decrement(void) {
-    if (duty_b > DUTY_MIN) duty_b--;
-    set_motor_pwm(BIN1, BIN2, duty_b);
+    if (duty_b > -100) duty_b--;
+    motor_b_set(duty_b);
 }
 
 void motor_stop_all(void) {
-    duty_a = 0;
-    duty_b = 0;
-    set_motor_pwm(AIN1, AIN2, 0);
-    set_motor_pwm(BIN1, BIN2, 0);
+    motor_a_set(0);
+    motor_b_set(0);
 }
 
 void motor_test_all(void) {
@@ -95,7 +117,7 @@ void motor_test_all(void) {
         motor_a_set(d);
         motor_b_set(d);
         printf("Ramp Up: Duty = %d\n", d);
-        sleep_ms(20);
+        sleep_ms(50);
     }
 
     // 100 → -100
@@ -103,7 +125,7 @@ void motor_test_all(void) {
         motor_a_set(d);
         motor_b_set(d);
         printf("Reverse Sweep: Duty = %d\n", d);
-        sleep_ms(20);
+        sleep_ms(50);
     }
 
     // -100 → 0
@@ -111,10 +133,49 @@ void motor_test_all(void) {
         motor_a_set(d);
         motor_b_set(d);
         printf("Ramp Down: Duty = %d\n", d);
-        sleep_ms(20);
+        sleep_ms(50);
     }
 
     motor_stop_all();
     printf("Motors stopped. Pausing...\n");
-    sleep_ms(1000);
+    sleep_ms(100);
+}
+
+void motor_turn_left(void) {
+    for (int d = 60; d <= 100; d++) {
+        motor_a_set(d / 2);
+        motor_b_set(d);
+        printf("Turning Left: A = %d, B = %d\n", d / 2, d);
+        sleep_ms(50);
+    }
+    motor_stop_all();
+    sleep_ms(100);
+}
+
+void motor_turn_right(void) {
+    for (int d = 60; d <= 100; d++) {
+        motor_a_set(d);
+        motor_b_set(d / 2);
+        printf("Turning Right: A = %d, B = %d\n", d, d / 2);
+        sleep_ms(50);
+    }
+    motor_stop_all();
+    sleep_ms(100);
+}
+
+void motor_spin_in_place(void) {
+    for (int d = 60; d <= 100; d++) {
+        motor_a_set(d);
+        motor_b_set(-d);
+        printf("Spinning: A = %d, B = %d\n", d, -d);
+        sleep_ms(50);
+    }
+    for (int d = 100; d >= 60; d--) {
+        motor_a_set(d);
+        motor_b_set(-d);
+        printf("Spinning: A = %d, B = %d\n", d, -d);
+        sleep_ms(50);
+    }
+    motor_stop_all();
+    sleep_ms(100);
 }
