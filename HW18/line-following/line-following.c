@@ -11,21 +11,19 @@ const int MAX_DUTY = 100;
 const int MIN_DUTY = 60;
 const int BASE_DUTY = 65;
 const int DEADBAND = 5;
-const float GAIN = 0.3f;
+const float GAIN = 0.6f;
 
 int main() {
     stdio_init_all();
     motor_init();
 
-    while (!stdio_usb_connected()) {
-        sleep_ms(100);
-    }
-    sleep_ms(50);
+    // while (!stdio_usb_connected()) {
+    //     sleep_ms(100);
+    // }
 
-    printf("Time to follow the line!\n");
-
+    //printf("Time to follow the line!\n");
     init_camera_pins();
-    sleep_ms(100);
+    sleep_ms(20);
  
     while (true) {
         setSaveImage(1);
