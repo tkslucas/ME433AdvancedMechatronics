@@ -48,6 +48,7 @@ uint32_t getPixelCount();
 void convertImage();
 void printImage();
 int findLine(int row);
+int findLineColumn(int col);
 void setPixel(int row, int col, uint8_t r, uint8_t g, uint8_t b);
 
 static volatile uint8_t saveImage = 0; // user requests image

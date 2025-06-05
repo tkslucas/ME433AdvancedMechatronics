@@ -11,7 +11,9 @@ const int MAX_DUTY = 100;
 const int MIN_DUTY = 60;
 const int BASE_DUTY = 65;
 const int DEADBAND = 5;
-const float GAIN = 0.6f;
+const float GAIN = 0.9f;
+const int LEFT_BIAS = 2;
+const float LEFT_BIAS_SLOPE = 1.2;
 
 int main() {
     stdio_init_all();
@@ -30,8 +32,8 @@ int main() {
         while(getSaveImage()==1) {}
         convertImage();
 
-        int com = findLine(IMAGESIZEY/2);
-        setPixel(IMAGESIZEY/2, com, 0, 255, 0);
+        int com = findLineColumn(IMAGESIZEX/2);
+        setPixel(IMAGESIZEX/2, com, 0, 255, 0);
 
         int image_center = IMAGESIZEX / 2;
         int error = com - image_center;
@@ -43,7 +45,7 @@ int main() {
         } else {
             int adjust = (int)(GAIN * error);
 
-            int left_duty  = BASE_DUTY + adjust;
+            int left_duty  = BASE_DUTY + adjust + LEFT_BIAS;
             int right_duty = BASE_DUTY - adjust;
 
             if (left_duty > MAX_DUTY) left_duty = MAX_DUTY;

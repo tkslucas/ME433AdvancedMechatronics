@@ -346,6 +346,45 @@ int findLine(int row){
     return (int)(centerOfMass);
 }
 
+int findLineColumn(int col){
+    int sumBright = 0;
+    int sumMass = 0;
+    int sumMassY = 0;
+
+    // Compute average brightness in the column
+    for (int row = 0; row < IMAGESIZEY; row++) {
+        int index = row * IMAGESIZEX + col;
+        int brightness = picture.r[index] + picture.g[index] + picture.b[index];
+        sumBright += brightness;
+    }
+
+    int avgBright = sumBright / IMAGESIZEY;
+
+    // Threshold the column and compute center of mass
+    for (int row = 0; row < IMAGESIZEY; row++) {
+        int index = row * IMAGESIZEX + col;
+        int brightness = picture.r[index] + picture.g[index] + picture.b[index];
+
+        if (brightness < avgBright) {
+            picture.r[index] = 0;
+            picture.g[index] = 0;
+            picture.b[index] = 0;
+        } else {
+            picture.r[index] = 255;
+            picture.g[index] = 255;
+            picture.b[index] = 255;
+
+            sumMass += brightness;
+            sumMassY += brightness * row;
+        }
+    }
+
+    if (sumMass == 0) return IMAGESIZEY / 2; // fallback to center
+
+    float centerOfMass = (float)sumMassY / sumMass;
+    return (int)centerOfMass;
+}
+
 // change the color of a pixel for visualization purposes
 void setPixel(int row, int col, uint8_t r, uint8_t g, uint8_t b){
     int index = row*IMAGESIZEX+col;
